@@ -23,9 +23,10 @@ public class DisbursementController {
 
     @PostMapping("/disburse")
     public CompletableFuture<UUID> disburse(@RequestParam("data") MultipartFile workersData) {
+        final UUID transactionId = UUID.randomUUID();
         final UploadWorkersDataCmd command = new UploadWorkersDataCmd(
-            UUID.randomUUID(), workersData);
-        uploadWorkersDataService.upload(workersData);
+            transactionId, workersData);
+        uploadWorkersDataService.upload(transactionId, workersData);
 
         return commandGateway.send(command);
     }
