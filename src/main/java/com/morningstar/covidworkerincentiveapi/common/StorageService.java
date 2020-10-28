@@ -1,4 +1,4 @@
-package com.morningstar.covidworkerincentiveapi.service;
+package com.morningstar.covidworkerincentiveapi.common;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,6 +1,6 @@
-package com.morningstar.covidworkerincentiveapi.coreapi;
+package com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata;
 
-import com.morningstar.covidworkerincentiveapi.domain.WorkerData;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.domain.WorkerData;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

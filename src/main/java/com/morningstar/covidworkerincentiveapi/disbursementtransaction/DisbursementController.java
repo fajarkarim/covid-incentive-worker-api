@@ -1,7 +1,7 @@
-package com.morningstar.covidworkerincentiveapi.controller;
+package com.morningstar.covidworkerincentiveapi.disbursementtransaction;
 
-import com.morningstar.covidworkerincentiveapi.coreapi.UploadWorkersDataCmd;
-import com.morningstar.covidworkerincentiveapi.service.UploadWorkersDataService;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.UploadWorkersDataCmd;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.UploadWorkersDataService;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.axonframework.commandhandling.gateway.CommandGateway;

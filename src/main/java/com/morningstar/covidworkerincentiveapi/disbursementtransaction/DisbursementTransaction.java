@@ -1,9 +1,11 @@
-package com.morningstar.covidworkerincentiveapi.command;
+package com.morningstar.covidworkerincentiveapi.disbursementtransaction;
 
-import com.morningstar.covidworkerincentiveapi.coreapi.UploadWorkersDataCmd;
-import com.morningstar.covidworkerincentiveapi.coreapi.ValidateWorkersDataCmd;
-import com.morningstar.covidworkerincentiveapi.coreapi.WorkersDataUploadedEvt;
-import com.morningstar.covidworkerincentiveapi.coreapi.WorkersDataValidatedEvt;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.disbursemoney.DisburseMoneyCmd;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.disbursemoney.MoneyDisbursedEvt;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.UploadWorkersDataCmd;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.WorkersDataUploadedEvt;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata.ValidateWorkersDataCmd;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata.WorkersDataValidatedEvt;
 import java.util.UUID;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -50,5 +52,19 @@ public class DisbursementTransaction {
     @EventSourcingHandler
     public void on(WorkersDataValidatedEvt workersDataValidatedEvt) {
         validated = true;
+    }
+
+    @CommandHandler
+    public void handle(DisburseMoneyCmd disburseMoneyCmd) {
+        if (disbursed) {
+            return;
+        }
+
+        AggregateLifecycle.apply(new MoneyDisbursedEvt(disburseMoneyCmd.getTransactionId()));
+    }
+
+    @EventSourcingHandler
+    public void on(MoneyDisbursedEvt moneyDisbursedEvt) {
+        disbursed = true;
     }
 }

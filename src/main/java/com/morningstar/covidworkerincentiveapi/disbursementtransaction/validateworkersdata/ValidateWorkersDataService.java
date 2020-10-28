@@ -1,7 +1,6 @@
-package com.morningstar.covidworkerincentiveapi.service;
+package com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata;
 
-import com.morningstar.covidworkerincentiveapi.coreapi.ValidateWorkersDataCmd;
-import com.morningstar.covidworkerincentiveapi.domain.WorkerData;
+import com.morningstar.covidworkerincentiveapi.disbursementtransaction.domain.WorkerData;
 import java.util.List;
 import java.util.UUID;
 import org.axonframework.commandhandling.CommandHandler;
