@@ -21,8 +21,7 @@ public class ValidateWorkersDataService {
         final List<WorkerData> workerDataList = validateWorkersDataCmd.getWorkerDataList();
         final Integer MAXIMUM_SALARY_CRITERIA = 1000000;
 
-        for (int index = 0; index < workerDataList.size(); index++) {
-            final WorkerData workerData = workerDataList.get(index);
+        for (final WorkerData workerData : workerDataList) {
             if (workerData.getSalary() > MAXIMUM_SALARY_CRITERIA) {
                 return "ERROR";
             }
