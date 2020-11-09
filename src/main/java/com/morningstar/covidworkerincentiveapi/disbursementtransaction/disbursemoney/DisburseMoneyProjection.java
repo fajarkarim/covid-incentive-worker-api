@@ -1,4 +1,4 @@
-package com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata;
+package com.morningstar.covidworkerincentiveapi.disbursementtransaction.disbursemoney;
 
 import com.morningstar.covidworkerincentiveapi.common.DisburseTransactionRepo;
 import com.morningstar.covidworkerincentiveapi.common.DisburseTransactionView;
@@ -7,18 +7,18 @@ import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ValidateWorkersDataProjection {
+public class DisburseMoneyProjection {
     private DisburseTransactionRepo disburseTransactionRepo;
 
-    public ValidateWorkersDataProjection(DisburseTransactionRepo disburseTransactionRepo)  {
+    public DisburseMoneyProjection(DisburseTransactionRepo disburseTransactionRepo) {
         this.disburseTransactionRepo = disburseTransactionRepo;
     }
 
     @EventHandler
-    public void on(WorkersDataValidatedEvt workersDataValidatedEvt) {
+    public void on(MoneyDisbursedEvt moneyDisbursedEvt) {
         final DisburseTransactionView disburseTransactionView = new DisburseTransactionView(
-            workersDataValidatedEvt.getTransactionId().toString(),
-            TransactionStatus.VALIDATED);
+            moneyDisbursedEvt.getTransactionId().toString(),
+            TransactionStatus.DISBURSED);
         disburseTransactionRepo.save(disburseTransactionView);
     }
 }

@@ -28,9 +28,11 @@ public class UploadWorkersDataService {
     public void upload(UUID transactionId, MultipartFile workersData) {
         final UploadWorkersDataCmd uploadWorkersDataCmd = new UploadWorkersDataCmd(
             transactionId, workersData);
-        commandGateway.send(uploadWorkersDataCmd);
         // store file
         this.storageService.storeFile(workersData);
+
+        // send command upload
+        commandGateway.send(uploadWorkersDataCmd);
 
         // parse file
         try (Reader reader = new BufferedReader(new InputStreamReader(workersData.getInputStream()))) {

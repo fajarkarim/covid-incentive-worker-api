@@ -1,11 +1,13 @@
 package com.morningstar.covidworkerincentiveapi.disbursementtransaction;
 
+import com.morningstar.covidworkerincentiveapi.common.WorkerData;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.disbursemoney.DisburseMoneyCmd;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.disbursemoney.MoneyDisbursedEvt;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.UploadWorkersDataCmd;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata.WorkersDataUploadedEvt;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata.ValidateWorkersDataCmd;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata.WorkersDataValidatedEvt;
+import java.util.List;
 import java.util.UUID;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -31,26 +33,23 @@ public class DisbursementTransaction {
             uploadWorkersDataCmd.getWorkersData()));
     }
 
-    @EventSourcingHandler
-    public void on(WorkersDataUploadedEvt workersDataUploadedEvt) {
-        transactionId = workersDataUploadedEvt.getTransactionId();
-        uploaded = true;
-        validated = false;
-        disbursed = false;
-    }
-
     @CommandHandler
     public void handle(ValidateWorkersDataCmd validateWorkersDataCmd) {
         if (validated) {
             return;
         }
-        AggregateLifecycle.apply(new WorkersDataValidatedEvt(validateWorkersDataCmd.getTransactionId(),
-            validateWorkersDataCmd.getWorkerDataList()));
-    }
 
-    @EventSourcingHandler
-    public void on(WorkersDataValidatedEvt workersDataValidatedEvt) {
-        validated = true;
+        final List<WorkerData> workerDataList = validateWorkersDataCmd.getWorkerDataList();
+        final Integer MAXIMUM_SALARY_CRITERIA = 1000000;
+
+        for (final WorkerData workerData : workerDataList) {
+            if (workerData.getSalary() > MAXIMUM_SALARY_CRITERIA) {
+                return;
+            }
+        }
+
+        AggregateLifecycle.apply(new WorkersDataValidatedEvt(transactionId,
+            validateWorkersDataCmd.getWorkerDataList()));
     }
 
     @CommandHandler
@@ -60,6 +59,19 @@ public class DisbursementTransaction {
         }
 
         AggregateLifecycle.apply(new MoneyDisbursedEvt(disburseMoneyCmd.getTransactionId()));
+    }
+
+    @EventSourcingHandler
+    public void on(WorkersDataUploadedEvt workersDataUploadedEvt) {
+        transactionId = workersDataUploadedEvt.getTransactionId();
+        uploaded = true;
+        validated = false;
+        disbursed = false;
+    }
+
+    @EventSourcingHandler
+    public void on(WorkersDataValidatedEvt workersDataValidatedEvt) {
+        validated = true;
     }
 
     @EventSourcingHandler
