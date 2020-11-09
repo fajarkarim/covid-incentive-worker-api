@@ -44,7 +44,6 @@ public class DisbursementTransaction {
         if (validated) {
             return;
         }
-
         AggregateLifecycle.apply(new WorkersDataValidatedEvt(validateWorkersDataCmd.getTransactionId(),
             validateWorkersDataCmd.getWorkerDataList()));
     }

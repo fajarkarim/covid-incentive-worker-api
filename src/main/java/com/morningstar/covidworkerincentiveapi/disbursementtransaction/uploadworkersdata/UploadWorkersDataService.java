@@ -26,6 +26,9 @@ public class UploadWorkersDataService {
     }
 
     public void upload(UUID transactionId, MultipartFile workersData) {
+        final UploadWorkersDataCmd uploadWorkersDataCmd = new UploadWorkersDataCmd(
+            transactionId, workersData);
+        commandGateway.send(uploadWorkersDataCmd);
         // store file
         this.storageService.storeFile(workersData);
 
@@ -39,13 +42,10 @@ public class UploadWorkersDataService {
             List<WorkerData> workerDataList = csvBean.parse();
 
             // continue to next process
-            final String result = commandGateway
-                .sendAndWait(new ValidateWorkersDataCmd(transactionId, workerDataList));
-            System.out.println(result);
+            commandGateway.send(new ValidateWorkersDataCmd(transactionId, workerDataList));
 
         } catch (IOException ioException) {
             System.out.println(ioException.getMessage());
         }
-
     }
 }

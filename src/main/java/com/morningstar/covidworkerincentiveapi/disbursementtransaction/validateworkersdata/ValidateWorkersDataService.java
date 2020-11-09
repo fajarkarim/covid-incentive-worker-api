@@ -2,9 +2,8 @@ package com.morningstar.covidworkerincentiveapi.disbursementtransaction.validate
 
 import com.morningstar.covidworkerincentiveapi.common.WorkerData;
 import java.util.List;
-import java.util.UUID;
-import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,10 +14,9 @@ public class ValidateWorkersDataService {
         this.commandGateway = commandGateway;
     }
 
-    @CommandHandler
-    public String handle(ValidateWorkersDataCmd validateWorkersDataCmd) {
-        final UUID transactionId = validateWorkersDataCmd.getTransactionId();
-        final List<WorkerData> workerDataList = validateWorkersDataCmd.getWorkerDataList();
+    @EventHandler
+    public String on(WorkersDataValidatedEvt workersDataValidatedEvt) {
+        final List<WorkerData> workerDataList = workersDataValidatedEvt.getWorkerDataList();
         final Integer MAXIMUM_SALARY_CRITERIA = 1000000;
 
         for (final WorkerData workerData : workerDataList) {
