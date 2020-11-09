@@ -1,4 +1,4 @@
-package com.morningstar.covidworkerincentiveapi.disbursementtransaction.domain;
+package com.morningstar.covidworkerincentiveapi.common;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;

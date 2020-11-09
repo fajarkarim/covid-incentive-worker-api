@@ -1,7 +1,7 @@
 package com.morningstar.covidworkerincentiveapi.disbursementtransaction.uploadworkersdata;
 
 import com.morningstar.covidworkerincentiveapi.common.StorageService;
-import com.morningstar.covidworkerincentiveapi.disbursementtransaction.domain.WorkerData;
+import com.morningstar.covidworkerincentiveapi.common.WorkerData;
 import com.morningstar.covidworkerincentiveapi.disbursementtransaction.validateworkersdata.ValidateWorkersDataCmd;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -38,7 +38,7 @@ public class UploadWorkersDataService {
 
             List<WorkerData> workerDataList = csvBean.parse();
 
-            // pass continue to next process
+            // continue to next process
             final String result = commandGateway
                 .sendAndWait(new ValidateWorkersDataCmd(transactionId, workerDataList));
             System.out.println(result);
